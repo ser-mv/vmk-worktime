@@ -1,2 +1,2 @@
-vmk-work-time
+vmk-worktime
 =============
