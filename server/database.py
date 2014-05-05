@@ -4,9 +4,10 @@ class database():
     __metaclass__=ABCMeta
     
     @abstractmethod
-    def save_employee(employee):
+    def save_employee(self, employee):
         pass
         
     @abstractmethod
-    def load_employees(filters):
+    def load_employees(self, filters = None, sorting = 'id',
+                       first_index = 0, last_index = 10000):
         pass
