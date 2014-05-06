@@ -1,5 +1,18 @@
 from hashlib import sha256
-from flask import Response
+from flask import Response, request
+from functools import wraps
+
+def requires_auth(f):
+    '''Enables authorization request'''
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or \
+           not check_auth(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    return decorated
+
 
 def check_auth(username, password):
     """This function is called to check if a username /

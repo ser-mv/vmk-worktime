@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <title>Работники</title>
+    <style>
+      body {
+        position: relative;
+        margin: 0 auto;
+        background-image: url(/image/bg2.png);
+        font: 14px ubuntu,tahoma,"sans-seriff";
+        background-repeat: repeat;
+        padding: 10px;
+      }
+      table {
+        box-shadow: 5px 5px 5px #888;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        background-repeat: repeat-x;
+        background-color: #FFFFFF;
+        border-color: #FFFFFF;
+        font: 14px ubuntu,tahoma,"sans-seriff";
+        padding: 5px
+      }
+    </style>
+  </head>
+  <body>
+    <table class="machete" border="1px" cellpadding="5px" cellspacing="0px">
+      <tr>
+	<th align="center">ID</th>
+        <th align="center">Имя</th>
+        <th align="center">Возраст</th>
+        <th align="center">Часы</th>
+	<th align="center">Зарплата</th>
+      </tr>
+      {% for employee in employees %}
+        <tr>
+          {% for item in employee %}
+          <td align="center">{{ item }}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </table>
+
+  </body>
+</html>
