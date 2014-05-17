@@ -7,7 +7,7 @@ import json
 import website_authorization
 import website
 import utils
-
+import api
 
 http_server = Flask(__name__, template_folder = 'html_templates', static_folder='')
 http_server.debug = True
@@ -28,6 +28,22 @@ def get_image(filename):
     except Exception, e:
         print traceback.format_exc()
         print e
+
+@http_server.route("/edit_employee", methods=['GET', 'POST'])
+#@website_authorization.requires_auth
+def edit_employee_page():
+    employee_id = int(request.form.get('employee_id'))
+    return website.edit_employee_page(employee_id)
+
+@http_server.route("/new_employee", methods=['GET', 'POST'])
+#@website_authorization.requires_auth
+def new_employee_page():
+    return website.edit_employee_page(-1, new_employee = True)
+
+@http_server.route("/save_employee", methods=['GET', 'POST'])
+#@website_authorization.requires_auth
+def save_employee_page():
+    return website.index_page(info_text = 'New employee successfully added')
 
 @http_server.route("/employees", methods=['GET', 'POST'])
 #@website_authorization.requires_auth
@@ -52,4 +68,13 @@ def employees_page():
 
     
 
-
+@http_server.route("/add_working_seconds", methods=['POST'])
+def add_working_seconds():
+    try:
+        employee_id = request.form.get('employee_id')
+        password = request.form.get('password')
+        working_seconds = request.form.get('working_seconds')
+        return api.add_working_seconds(employee_id, working_seconds, password)
+    except Exception, e:
+        print traceback.format_exc()
+        print e

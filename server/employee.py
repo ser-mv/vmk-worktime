@@ -6,6 +6,7 @@ class employee():
         self.id = -1
         self.name = ""
         self.age = 0
+        self.password_hash = 'abcd_fake_initial_password'
         self.salary_per_hour = 0
         self.working_months = json.dumps({}) #stores working seconds for each month
         

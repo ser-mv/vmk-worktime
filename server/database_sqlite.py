@@ -73,6 +73,15 @@ class database_sqlite(database.database):
         return employees
         
         
+    def delete_employee(self, employee_id):
         
+        request = 'REMOVE FROM employees WHERE id = '
+        request += str(employee_id)
+
+        self.cursor.execute(request)
+        self.db.commit()
+        
+        
+    def generate_new_employee_id(self):
         
         
