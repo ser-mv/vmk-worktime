@@ -16,7 +16,7 @@ http_server.debug = True
 
 
 @http_server.route("/")
-#@website_authorization.requires_auth
+@website_authorization.requires_auth
 def index_page():
     try:
         return website.index_page()
@@ -35,12 +35,12 @@ def get_image(filename):
         print e
 
 @http_server.route("/employee/<int:employee_id>", methods=['GET', 'POST'])
-#@website_authorization.requires_auth
+@website_authorization.requires_auth
 def edit_employee_page(employee_id):
     return website.edit_employee_page(employee_id)
 
 @http_server.route("/new_employee", methods=['GET', 'POST'])
-#@website_authorization.requires_auth
+@website_authorization.requires_auth
 def new_employee_page():
     try:
         res =  website.edit_employee_page(-1, new_employee = True)
@@ -50,7 +50,7 @@ def new_employee_page():
         print e
 
 @http_server.route("/save_employee", methods=['GET', 'POST'])
-#@website_authorization.requires_auth
+@website_authorization.requires_auth
 def save_employee_page():
     try:
         values = request.form
@@ -60,7 +60,7 @@ def save_employee_page():
         print e
 
 @http_server.route("/delete_employee", methods=['GET', 'POST'])
-#@website_authorization.requires_auth
+@website_authorization.requires_auth
 def delete_employee():
     try:
         id = request.form.get('id')
@@ -71,7 +71,7 @@ def delete_employee():
 
 
 @http_server.route("/save_employee_password", methods=['GET', 'POST'])
-#@website_authorization.requires_auth
+@website_authorization.requires_auth
 def save_employee_password():
     try:
         id = request.form.get('id')
@@ -84,7 +84,7 @@ def save_employee_password():
 
 
 @http_server.route("/employees", methods=['GET', 'POST'])
-#@website_authorization.requires_auth
+@website_authorization.requires_auth
 def employees_page():
     try:
 

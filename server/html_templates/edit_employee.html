@@ -64,10 +64,7 @@
     <form action="/save_employee_password" method="post">
     <table align="center" class="machete" border="1px" cellpadding="5px" cellspacing="0px">
         
-        <tr>
-          <td align="right">ID</td>
-          <td align="left"><input type="hidden" name="id" value="{{ values['id'] }}" readonly></td>
-        </tr>
+          <input type="hidden" name="id" value="{{ values['id'] }}" readonly>
         <tr>
           <td align="right">Новый Пароль</td>
           <td align="left"><input type="password" name="password"></td>

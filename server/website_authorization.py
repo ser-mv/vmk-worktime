@@ -26,7 +26,7 @@ def check_auth(username, password):
         h.update('pwkfwkfwpekf46436')
         h.update(password)
         user_hash = h.hexdigest()
-        return (username == 'login') and (user_hash == valid_hash)
+        return (username == 'user') and (user_hash == valid_hash)
     except Exception as e:
         print e
         return False
