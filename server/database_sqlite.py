@@ -9,7 +9,7 @@ class database_sqlite(database.database):
         self.db = sqlite3.connect(filename, check_same_thread = False)
         self.cursor = self.db.cursor()
 
-        columns = employee.employee().to_dict()
+        columns = employee.Employee().to_dict()
         del columns['id']
 
         request = 'CREATE TABLE IF NOT EXISTS employees '
@@ -43,7 +43,7 @@ class database_sqlite(database.database):
         limit = last_index - first_index + 1
         offset = first_index
         
-        columns = employee.employee().to_dict().keys()
+        columns = employee.Employee().to_dict().keys()
         request = 'SELECT '
         for column in columns:
             request += column + ', '
@@ -69,7 +69,7 @@ class database_sqlite(database.database):
             values_dict = {}
             for i in xrange(columns):
                 values_dict[columns[i]] = row[i]
-            employees.append(employee(values_dict))
+            employees.append(employee.Employee(values_dict))
         return employees
         
         
@@ -82,6 +82,9 @@ class database_sqlite(database.database):
         self.db.commit()
         
         
-    def generate_new_employee_id(self):
+    def add_employee(self, employee):
+        new_id = int(self.cursor.execute('SELECT MAX(id) from employees')[0][0]) + 1
+        employee.id = new_id
+        self.save_employee(employee)
         
         

@@ -18,7 +18,12 @@ http_server.debug = True
 @http_server.route("/")
 #@website_authorization.requires_auth
 def index_page():
-    return website.index_page()
+    try:
+        return website.index_page()
+    except Exception, e:
+        print traceback.format_exc()
+        print e
+
 
 @http_server.route("/image/<filename>")
 def get_image(filename):
@@ -38,12 +43,23 @@ def edit_employee_page():
 @http_server.route("/new_employee", methods=['GET', 'POST'])
 #@website_authorization.requires_auth
 def new_employee_page():
-    return website.edit_employee_page(-1, new_employee = True)
+    try:
+        res =  website.edit_employee_page(-1, new_employee = True)
+        return res
+    except Exception, e:
+        print traceback.format_exc()
+        print e
 
 @http_server.route("/save_employee", methods=['GET', 'POST'])
 #@website_authorization.requires_auth
 def save_employee_page():
-    return website.index_page(info_text = 'New employee successfully added')
+    try:
+        values = request.form
+        return website.save_employee(values)
+    except Exception, e:
+        print traceback.format_exc()
+        print e
+
 
 @http_server.route("/employees", methods=['GET', 'POST'])
 #@website_authorization.requires_auth

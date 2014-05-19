@@ -17,5 +17,5 @@ class database():
         pass
 
     @abstractmethod
-    def generate_new_employee_id(self):
+    def add_employee(self):
         pass

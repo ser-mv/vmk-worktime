@@ -1,7 +1,7 @@
 import utils
 import json
 
-class employee():
+class Employee():
     def __init__(self, init_values = None):
         self.id = -1
         self.name = ""
