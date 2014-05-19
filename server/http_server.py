@@ -114,9 +114,9 @@ def employees_page():
 @http_server.route("/add_working_seconds", methods=['POST'])
 def add_working_seconds():
     try:
-        employee_id = request.form.get('employee_id')
+        employee_id = int(request.form.get('employee_id'))
         password = request.form.get('password')
-        working_seconds = request.form.get('working_seconds')
+        working_seconds = int(request.form.get('working_seconds'))
         return api.add_working_seconds(employee_id, working_seconds, password)
     except Exception, e:
         print traceback.format_exc()
