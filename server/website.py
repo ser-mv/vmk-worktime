@@ -1,5 +1,6 @@
-from flask import render_template
+from flask import render_template, redirect
 from employee import Employee
+import user_authorization
 import json
 
 db = None
@@ -14,7 +15,7 @@ def employees_page(filters, month, sorting):
     for employee in employees:
         hours = employee.get_working_hours(month)
         salary = hours * employee.salary_per_hour
-        table.append([employee.id, employee.name, employee.age, hours, salary])
+        table.append([employee.id, employee.name, employee.age, employee.department, hours, employee.salary_per_hour, salary])
     if sorting != None:
         if sorting > 0:
             table = sorted(table, key = lambda x: x[sorting-1])
@@ -26,25 +27,37 @@ def employees_page(filters, month, sorting):
 
 
 
-def edit_employee_page(employee_id, new_employee = False):
+def edit_employee_page(employee_id, new_employee = False, info_text = ''):
     if new_employee:
-        values = Employee().to_dict()
+        employee = db.add_employee(Employee())
+        return redirect("/employee/" + str(employee.id))
+        values = employee.to_dict()
         for key in values.keys():
-            values[key] = ''
+            if key != 'id':
+                values[key] = ''
         values['working_months'] = {}
     else:
         employee = db.load_employees(filters = {'id':employee_id})[0]
         values = employee.to_dict()
+        print values
+        
         values['working_months'] = json.loads(values['working_months'])
         for key in values['working_months'].keys():
             values['working_months'][key] /= 3600
             
     return render_template('edit_employee.html',
-                    values = values)
+                           values = values, info_text = info_text)
 
-def save_employee(values):
-    values['age'] = int(values['age'])
-    values['salary_per_hour'] = int(values['salary_per_hour'])
+def save_employee(form_values):
+    values = form_values.to_dict()
+    try:
+        values['age'] = int(values['age'])
+    except:
+        values['age'] = 0
+    try:
+        values['salary_per_hour'] = int(values['salary_per_hour'])
+    except:
+        values['salary_per_hour'] = 0
     if values['id'] == '':
         values['id'] = 0
         employee = Employee(values)
@@ -53,6 +66,16 @@ def save_employee(values):
         values['id'] = int(values['id'])
         employee = db.load_employees(filters = {'id':values['id']})[0]
         for key, value in values.items():
-            employee.setattr(key, value)
+            setattr(employee, key, value)
         db.save_employee(employee)
-    return index_page(info_text = 'Employee was saved')
+    return redirect("/employee/" + str(employee.id))
+
+def delete_employee(id):
+    db.delete_employee(id)
+    return redirect("/")
+
+def save_employee_password(id, password):
+    employee = db.load_employees(filters = {'id':id})[0]
+    user_authorization.set_password(employee, password)
+    db.save_employee(employee)
+    return redirect("/employee/" + str(id))

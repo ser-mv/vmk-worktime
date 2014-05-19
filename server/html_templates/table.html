@@ -23,19 +23,62 @@
       }
     </style>
   </head>
-  <body>
-    <table class="machete" border="1px" cellpadding="5px" cellspacing="0px">
+  <body align="center">
+    <a href="/">Главная</a><br/><br/>
+
+
+    <form align="center" action="/employees" method="post">
+
+      Фильтация:
+      Месяц <input type="month" name="month", value={{ month }}><br/>
+      ID <input type="number" name="id" value="{{ filters['id'] }}"><br/>
+      Имя <input type="text" name="name" value="{{ filters['name'] }}"><br/>
+      Возраст <input type="number" name="age" value="{{ filters['age'] }}"><br/>
+      Отдел<input type="text" name="department" value="{{ filters['department'] }}"><br/>
+
+      Сортировка:<br/>
+      <select name="sorting">
+        <option selected value="1">ID</option>
+        <option value="2">Имя</option>
+        <option value="3">Возраст</option>
+        <option value="4">Отдел</option>
+        <option value="5">Количество часов</option>
+        <option value="6">Зарплата в час</option>
+        <option value="7">Зарплата в этот месяц</option>
+      </select>
+      <br/>
+      <select name="sorting_dir">
+        <option selected value="1">По возрастанию</option>
+        <option value="2">По убыванию</option>
+      </select>
+      <br/>
+      <br/>
+      <input type="submit" value="Обновить">
+
+    </form>
+
+
+    <table align="center"class="machete" border="1px" cellpadding="5px" cellspacing="0px">
       <tr>
 	<th align="center">ID</th>
         <th align="center">Имя</th>
         <th align="center">Возраст</th>
-        <th align="center">Часы</th>
-	<th align="center">Зарплата</th>
+        <th align="center">Отдел</th>
+        <th align="center">Количество часов</th>
+	<th align="center">Зарплата в час</th>
+	<th align="center">Зарплата в этот месяц</th>
+
       </tr>
       {% for employee in employees %}
         <tr>
-          {% for item in employee %}
-          <td align="center">{{ item }}</td>
+          {% for i in range(employee|length()) %}
+          <td align="center">
+          {% if i == 0  %}
+          <a href = "/employee/{{ employee[0] }}">{{ employee[i] }}</a>
+          {% else %}
+          {{ employee[i] }}
+          {% endif %}
+          </td>
           {% endfor %}
         </tr>
       {% endfor %}

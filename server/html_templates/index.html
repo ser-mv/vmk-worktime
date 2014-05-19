@@ -1,12 +1,12 @@
 <html>
   <head>
-    <title>Работник</title>
+    <title>Учет сотрудников</title>
     <style>
       body {
         position: relative;
         margin: 0 auto;
         background-image: url(/image/bg2.png);
-        font: 14px ubuntu,tahoma,"sans-seriff";
+        font: 16px ubuntu,tahoma,"sans-seriff";
         background-repeat: repeat;
         padding: 10px;
       }
@@ -24,22 +24,8 @@
     </style>
   </head>
   <body>
-    <form action = "save_employee">
-    <table class="machete" border="1px" cellpadding="5px" cellspacing="0px">
-      {% for key, value in values.iteritems() %}
-        <tr>
-          <td align="right">{{ key }}</td>
-          <td align="left">
-            {% if key == "id" %}
-              <input type="text" name={{ key }} value={{ value }} readonly>
-            {% elif (key != "working_months") and (key != "password_hash") %}
-              <input type="text" name={{ key }} value={{ value }}>
-            {% endif %}
-          </td>
-        </tr>
-      {% endfor %}
-    </table>
-    <input type="submit" value="save">
-
+    {{ info_text }} <br/><br/>
+    <a href="/new_employee">Добавить работника</a><br/><br/>
+    <a href="/employees">Таблица Работников</a>
   </body>
 </html>

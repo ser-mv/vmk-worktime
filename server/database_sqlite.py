@@ -1,6 +1,6 @@
 sql_types = {'int':'INTEGER', 'long':'INTEGER', 'str':'TEXT', 'unicode':'TEXT', 'float':'REAL'}
 
-import employee
+from employee import Employee
 import sqlite3
 import database
 
@@ -9,7 +9,7 @@ class database_sqlite(database.database):
         self.db = sqlite3.connect(filename, check_same_thread = False)
         self.cursor = self.db.cursor()
 
-        columns = employee.Employee().to_dict()
+        columns = Employee().to_dict()
         del columns['id']
 
         request = 'CREATE TABLE IF NOT EXISTS employees '
@@ -33,8 +33,9 @@ class database_sqlite(database.database):
         for column in parameters.keys():
             request += '?,'
         request = request[0:-1] + ')'
+        print "!!SAVE", request, parameters.values()
 
-        self.cursor.execute(request, *parameters.values())
+        self.cursor.execute(request, parameters.values())
         self.db.commit()
 
     def load_employees(self, filters = None, #sorting = 'id',
@@ -43,13 +44,13 @@ class database_sqlite(database.database):
         limit = last_index - first_index + 1
         offset = first_index
         
-        columns = employee.Employee().to_dict().keys()
+        columns = Employee().to_dict().keys()
         request = 'SELECT '
         for column in columns:
             request += column + ', '
         request = request[0:-2] + ' FROM employees '
         if filters != None and len(filters) != 0:
-            request = request[0:-2] + 'WHERE '
+            request = request + 'WHERE '
             for key in filters.keys():
                 request += key + ' = ? AND '
             request = request[0:-5]
@@ -59,23 +60,27 @@ class database_sqlite(database.database):
 
         print request
 
+        print request, filters.values()
+        
         if filters != None and len(filters) != 0:
-            rows = self.cursor.execute(request, *filters.values())
+            rows = self.cursor.execute(request, filters.values()).fetchall()
         else:
-            rows = self.cursor.execute(request)
+            rows = self.cursor.execute(request).fetchall()
 
         employees = []
         for row in rows:
             values_dict = {}
-            for i in xrange(columns):
+            for i in xrange(len(columns)):
                 values_dict[columns[i]] = row[i]
-            employees.append(employee.Employee(values_dict))
+            employee = Employee()
+            employee.set_values(values_dict)
+            employees.append(employee)
         return employees
         
         
     def delete_employee(self, employee_id):
         
-        request = 'REMOVE FROM employees WHERE id = '
+        request = 'DELETE FROM employees WHERE id = '
         request += str(employee_id)
 
         self.cursor.execute(request)
@@ -83,8 +88,12 @@ class database_sqlite(database.database):
         
         
     def add_employee(self, employee):
-        new_id = int(self.cursor.execute('SELECT MAX(id) from employees')[0][0]) + 1
+        max_id = self.cursor.execute('SELECT MAX(id) FROM employees').fetchone()[0]
+        if max_id == None:
+            max_id = -1
+        new_id = max_id + 1
         employee.id = new_id
         self.save_employee(employee)
+        return employee
         
         

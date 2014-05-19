@@ -3,16 +3,19 @@ import json
 
 class Employee():
     def __init__(self, init_values = None):
-        self.id = -1
+        self.id = -2
         self.name = ""
         self.age = 0
+        self.department = ''
         self.password_hash = 'abcd_fake_initial_password'
         self.salary_per_hour = 0
         self.working_months = json.dumps({}) #stores working seconds for each month
         
-        if init_values != None:
-            for key in init_values.keys:
-                setattr(self, key, init_values[key])
+
+    def set_values(self, values):
+        for key in values.keys():
+            setattr(self, key, values[key])
+
 
     def add_working_seconds(self, working_seconds):
         working_months = json.loads(self.working_months)

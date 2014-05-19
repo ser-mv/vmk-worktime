@@ -22,24 +22,73 @@
         padding: 5px
       }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script>
+      $(document).ready(function(){
+      setTimeout(function(){
+      $('.showupAfter8seconds').hide();
+      },1000);
+      });
+    </script>
   </head>
-  <body>
-    <form action = "save_employee">
-    <table class="machete" border="1px" cellpadding="5px" cellspacing="0px">
-      {% for key, value in values.iteritems() %}
+  <body  align="center">
+    <a href="/">Главная</a><br/><br/>
+    <form action="/save_employee" method="post">
+    <table align="center" class="machete" border="1px" cellpadding="5px" cellspacing="0px">
+        
         <tr>
-          <td align="right">{{ key }}</td>
-          <td align="left">
-            {% if key == "id" %}
-              <input type="text" name={{ key }} value={{ value }} readonly>
-            {% elif (key != "working_months") and (key != "password_hash") %}
-              <input type="text" name={{ key }} value={{ value }}>
-            {% endif %}
-          </td>
+          <td align="right">ID</td>
+          <td align="left"><input type="text" name="id" value="{{ values['id'] }}" readonly></td>
         </tr>
-      {% endfor %}
+        <tr>          
+          <td align="right">Имя</td>
+          <td align="left"><input type="text" name="name" value="{{ values['name'] }}"></td>
+        </tr>
+        <tr>          
+          <td align="right">Возраст</td>
+          <td align="left"><input type="number" name="age" value="{{ values['age'] }}"></td>
+        </tr>
+        <tr>          
+          <td align="right">Отдел</td>
+          <td align="left"><input type="text" name="department" value="{{ values['department'] }}"></td>
+        </tr>
+        <tr>          
+          <td align="right">Зарплата в час</td>
+          <td align="left"><input type="number" name="salary_per_hour" value="{{ values['salary_per_hour'] }}"></td>
+        </tr>
+
     </table>
-    <input type="submit" value="save">
+    <input type="submit" value="Сохранить">
+    </form>
+
+    <form action="/save_employee_password" method="post">
+    <table align="center" class="machete" border="1px" cellpadding="5px" cellspacing="0px">
+        
+        <tr>
+          <td align="right">ID</td>
+          <td align="left"><input type="hidden" name="id" value="{{ values['id'] }}" readonly></td>
+        </tr>
+        <tr>
+          <td align="right">Новый Пароль</td>
+          <td align="left"><input type="password" name="password"></td>
+        </tr>
+        <tr>          
+    </table>
+    <input type="submit" value="Изменить пароль">
+    </form>
+
+    <br/>
+
+    <form action="/delete_employee" method="post">
+      <input type="hidden" name="id" value="{{ values['id'] }}" readonly>
+    <input type="submit" value="Удалить работника из базы">
+    </form>
+
+
+    <div class="showupAfter8seconds">
+      <h1>Сохранено</h1>
+    </div>
+
 
   </body>
 </html>

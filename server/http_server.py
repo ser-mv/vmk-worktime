@@ -34,10 +34,9 @@ def get_image(filename):
         print traceback.format_exc()
         print e
 
-@http_server.route("/edit_employee", methods=['GET', 'POST'])
+@http_server.route("/employee/<int:employee_id>", methods=['GET', 'POST'])
 #@website_authorization.requires_auth
-def edit_employee_page():
-    employee_id = int(request.form.get('employee_id'))
+def edit_employee_page(employee_id):
     return website.edit_employee_page(employee_id)
 
 @http_server.route("/new_employee", methods=['GET', 'POST'])
@@ -60,23 +59,51 @@ def save_employee_page():
         print traceback.format_exc()
         print e
 
+@http_server.route("/delete_employee", methods=['GET', 'POST'])
+#@website_authorization.requires_auth
+def delete_employee():
+    try:
+        id = request.form.get('id')
+        return website.delete_employee(id)
+    except Exception, e:
+        print traceback.format_exc()
+        print e
+
+
+@http_server.route("/save_employee_password", methods=['GET', 'POST'])
+#@website_authorization.requires_auth
+def save_employee_password():
+    try:
+        id = request.form.get('id')
+        password = request.form.get('password')
+        return website.save_employee_password(id, password)
+    except Exception, e:
+        print traceback.format_exc()
+        print e
+
+
 
 @http_server.route("/employees", methods=['GET', 'POST'])
 #@website_authorization.requires_auth
 def employees_page():
     try:
-        filters = {}
-        old_filters = request.form.get('old_filters')
-        if old_filters:
-            filters = json.loads(old_filters)
-        new_filter_name = request.form.get('filter_name')
-        new_filter_value = request.form.get('filter_value')
-        if new_filter_name != None and new_filter_value != None:
-            filters[new_filter_name] = new_filter_value
-        month = request.form.get('month')
-        if month == None:
-            month = utils.current_month()
-        sorting = request.form.get('sorting') or 1
+
+        month = request.form.get('month') or utils.current_month()
+        print '!!!!!!!!', month
+        sorting = int(request.form.get('sorting') or 1)
+        sorting_dir = int(request.form.get('sorting_dir') or 1)
+        if sorting_dir == 2:
+            sorting = -sorting
+        filters = request.form.to_dict()
+        if 'month' in filters:
+            del filters['month']
+        if 'sorting' in filters:
+            del filters['sorting']
+        if 'sorting_dir' in filters:
+            del filters['sorting_dir']
+        for key in filters.keys():
+            if filters[key].strip() == '':
+                del filters[key]
         return website.employees_page(filters, month, sorting)
     except Exception, e:
         print traceback.format_exc()
