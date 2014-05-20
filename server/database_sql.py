@@ -10,15 +10,17 @@ class database_sql(database.database):
     def __init__(self):
         self.db = None
         self.cursor = None
+        self.f = None
         
     def init_sqlite(self, filename):
+        self.f = '?'
         self.db = sqlite3.connect(filename, check_same_thread = False)
         self.init_table()
 
     def init_postgresql(self, database, user, password, host, port):
-        print database, user, password, host, port
+        self.f = '%s'
         self.db = psycopg2.connect(database = database, user = user, password = password,
-                                   host = host, port = port)
+                                   host = host, port = port, async = 0)
         self.init_table()
         
     def init_table(self):
@@ -42,11 +44,10 @@ class database_sql(database.database):
         
         request = 'UPDATE employees SET '
         for column in parameters.keys():
-            request += column + '=%s, '
+            request += column + '=' + self.f + ', '
         
         request = request[0:-2]
         request += " WHERE id = " + str(employee.id)
-        print "!!SAVE", request, parameters.values()
 
         self.cursor.execute(request, parameters.values())
         self.db.commit()
@@ -65,20 +66,19 @@ class database_sql(database.database):
         if filters != None and len(filters) != 0:
             request = request + 'WHERE '
             for key in filters.keys():
-                request += key + ' = %s AND '
+                request += key + ' = ' + self.f + ' AND '
             request = request[0:-5]
         #request += ' ORDER BY ' + sorting
         #request += ' LIMIT ' + str(limit)
         #request += ' OFFSET ' + str(offset)
 
-        print request
 
-        print request, filters.values()
         try:
             if filters != None and len(filters) != 0:
-                rows = self.cursor.execute(request, filters.values()).fetchall()
+                self.cursor.execute(request, filters.values())
             else:
-                rows = self.cursor.execute(request).fetchall()
+                self.cursor.execute(request)
+            rows = self.cursor.fetchall()
         except Exception as e:
             print traceback.format_exc()
             print e
@@ -107,14 +107,15 @@ class database_sql(database.database):
     def add_employee(self, employee):
         try:
             print self.cursor.execute('SELECT max(id) FROM employees;')
-            max_id = self.cursor.execute('SELECT max(id) FROM employees').fetchone()[0]
+            self.cursor.execute('SELECT max(id) FROM employees')
+            max_id = self.cursor.fetchone()[0]
         except Exception as e:
             print e
             print traceback.format_exc()
             max_id = None
             
         if max_id == None:
-            max_id = -1
+            max_id = 0
         new_id = max_id + 1
         employee.id = new_id
         parameters = employee.to_dict()
@@ -125,9 +126,8 @@ class database_sql(database.database):
         request = request[0:-2] + ') VALUES ('
         
         for column in parameters.keys():
-            request += '%s,'
+            request += self.f + ','
         request = request[0:-1] + ')'
-        print "!!SAVE", request, parameters.values()
 
         self.cursor.execute(request, parameters.values())
         self.db.commit()
