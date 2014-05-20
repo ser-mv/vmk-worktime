@@ -4,6 +4,7 @@ from employee import Employee
 import sqlite3
 import psycopg2
 import database
+import traceback
 
 class database_sql(database.database):
     def __init__(self):
@@ -15,6 +16,7 @@ class database_sql(database.database):
         self.init_table()
 
     def init_postgresql(self, database, user, password, host, port):
+        print database, user, password, host, port
         self.db = psycopg2.connect(database = database, user = user, password = password,
                                    host = host, port = port)
         self.init_table()
@@ -38,14 +40,12 @@ class database_sql(database.database):
     def save_employee(self, employee):
         parameters = employee.to_dict()
         
-        request = 'INSERT OR REPLACE INTO employees ('
+        request = 'UPDATE employees SET '
         for column in parameters.keys():
-            request += column + ', '
-        request = request[0:-2] + ') VALUES ('
+            request += column + '=%s, '
         
-        for column in parameters.keys():
-            request += '?,'
-        request = request[0:-1] + ')'
+        request = request[0:-2]
+        request += " WHERE id = " + str(employee.id)
         print "!!SAVE", request, parameters.values()
 
         self.cursor.execute(request, parameters.values())
@@ -65,20 +65,24 @@ class database_sql(database.database):
         if filters != None and len(filters) != 0:
             request = request + 'WHERE '
             for key in filters.keys():
-                request += key + ' = ? AND '
+                request += key + ' = %s AND '
             request = request[0:-5]
         #request += ' ORDER BY ' + sorting
-        request += ' LIMIT ' + str(limit)
-        request += ' OFFSET ' + str(offset)
+        #request += ' LIMIT ' + str(limit)
+        #request += ' OFFSET ' + str(offset)
 
         print request
 
         print request, filters.values()
-        
-        if filters != None and len(filters) != 0:
-            rows = self.cursor.execute(request, filters.values()).fetchall()
-        else:
-            rows = self.cursor.execute(request).fetchall()
+        try:
+            if filters != None and len(filters) != 0:
+                rows = self.cursor.execute(request, filters.values()).fetchall()
+            else:
+                rows = self.cursor.execute(request).fetchall()
+        except Exception as e:
+            print traceback.format_exc()
+            print e
+            rows = []
 
         employees = []
         for row in rows:
@@ -101,12 +105,32 @@ class database_sql(database.database):
         
         
     def add_employee(self, employee):
-        max_id = self.cursor.execute('SELECT MAX(id) FROM employees').fetchone()[0]
+        try:
+            print self.cursor.execute('SELECT max(id) FROM employees;')
+            max_id = self.cursor.execute('SELECT max(id) FROM employees').fetchone()[0]
+        except Exception as e:
+            print e
+            print traceback.format_exc()
+            max_id = None
+            
         if max_id == None:
             max_id = -1
         new_id = max_id + 1
         employee.id = new_id
-        self.save_employee(employee)
+        parameters = employee.to_dict()
+        
+        request = 'INSERT INTO employees ('
+        for column in parameters.keys():
+            request += column + ', '
+        request = request[0:-2] + ') VALUES ('
+        
+        for column in parameters.keys():
+            request += '%s,'
+        request = request[0:-1] + ')'
+        print "!!SAVE", request, parameters.values()
+
+        self.cursor.execute(request, parameters.values())
+        self.db.commit()
         return employee
         
         
