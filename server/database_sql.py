@@ -2,11 +2,24 @@ sql_types = {'int':'INTEGER', 'long':'INTEGER', 'str':'TEXT', 'unicode':'TEXT', 
 
 from employee import Employee
 import sqlite3
+import psycopg2
 import database
 
-class database_sqlite(database.database):
-    def __init__(self, filename):
+class database_sql(database.database):
+    def __init__(self):
+        self.db = None
+        self.cursor = None
+        
+    def init_sqlite(self, filename):
         self.db = sqlite3.connect(filename, check_same_thread = False)
+        self.init_table()
+
+    def init_postgresql(self, database, user, password, host, port):
+        self.db = psycopg2.connect(database = database, user = user, password = password,
+                                   host = host, port = port)
+        self.init_table()
+        
+    def init_table(self):
         self.cursor = self.db.cursor()
 
         columns = Employee().to_dict()
