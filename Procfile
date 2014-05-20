@@ -1,1 +1,1 @@
-web: sh -c 'cd server/ && python main.py'
+web: sh -c 'cd server/ && gunicorn main:app'
