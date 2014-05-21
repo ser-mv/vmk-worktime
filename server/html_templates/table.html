@@ -2,39 +2,184 @@
   <head>
     <title>Работники</title>
     <style>
+
       body {
         position: relative;
         margin: 0 auto;
-        background-image: url(/image/bg2.png);
-        font: 14px ubuntu,tahoma,"sans-seriff";
+        background-image: url(/image/bg3.jpg);
+        font: 18px ubuntu,tahoma,"sans-seriff";
         background-repeat: repeat;
         padding: 10px;
       }
-      table {
-        box-shadow: 5px 5px 5px #888;
-        margin-top: 10px;
+      table.table1 {
+        /*margin-top: 10px;
         margin-bottom: 10px;
         border-radius: 5px;
         background-repeat: repeat-x;
-        background-color: #FFFFFF;
-        border-color: #FFFFFF;
+        background-color: #AAAAAA;
+        border-color: #AAAAAA;
         font: 14px ubuntu,tahoma,"sans-seriff";
-        padding: 5px
+        padding: 5px*/
+
+
+
+
+   /*border: 3px solid #f2e3d2;*/
+   background: #c9b7a2;
+   background: -webkit-gradient(linear, left top, left bottom, from(#f2e3d2), to(#c9b7a2));
+   background: -webkit-linear-gradient(top, #f2e3d2, #c9b7a2);
+   background: -moz-linear-gradient(top, #f2e3d2, #c9b7a2);
+   background: -ms-linear-gradient(top, #f2e3d2, #c9b7a2);
+   background: -o-linear-gradient(top, #f2e3d2, #c9b7a2);
+   background-image: -ms-linear-gradient(top, #f2e3d2 0%, #c9b7a2 100%);
+   -webkit-border-radius: 8px;
+   -moz-border-radius: 8px;
+   border-radius: 8px;
+   -webkit-box-shadow: rgba(000,000,000,0.9) 0 1px 2px, inset rgba(255,255,255,0.4) 0 0px 0;
+   -moz-box-shadow: rgba(000,000,000,0.9) 0 1px 2px, inset rgba(255,255,255,0.4) 0 0px 0;
+   box-shadow: rgba(000,000,000,0.9) 0 1px 2px, inset rgba(255,255,255,0.4) 0 0px 0;
+   font-family: 'Helvetica Neue',Helvetica,sans-serif;
+   text-decoration: none;
+   vertical-align: middle;
+   min-width:400px;
+   padding:20px;
+   width:400px;
+   text-align:center;
+   margin: 0 auto;
+
+
+
+
       }
+      th1 {
+        color: #725129
+      }
+
+      td {
+        color: #725129
+      }
+
+input {
+   border: 1px solid #856540;
+   background: #e4d5c3;
+   -webkit-border-radius: 4px;
+   -moz-border-radius: 4px;
+   border-radius: 4px;
+   color: #5c360a;
+   -webkit-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(000,000,000,0.7) 0 0px 0px;
+   -moz-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(000,000,000,0.7) 0 0px 0px;
+   box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(000,000,000,0.7) 0 0px 0px;
+   padding:8px;
+   /*margin-bottom:20px;*/
+   width:280px;
+   }
+
+select {
+   border: 1px solid #856540;
+   background: #e4d5c3;
+   -webkit-border-radius: 4px;
+   -moz-border-radius: 4px;
+   border-radius: 4px;
+   color: #5c360a;
+   -webkit-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(000,000,000,0.7) 0 0px 0px;
+   -moz-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(000,000,000,0.7) 0 0px 0px;
+   box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(000,000,000,0.7) 0 0px 0px;
+   padding:8px;
+   /*margin-bottom:20px;*/
+   width:200px;
+   }
+
+
+
+.submit-button {
+   border: 1px solid #447314;
+   background: #6aa436;
+   background: -webkit-gradient(linear, left top, left bottom, from(#8dc059), to(#6aa436));
+   background: -webkit-linear-gradient(top, #8dc059, #6aa436);
+   background: -moz-linear-gradient(top, #8dc059, #6aa436);
+   background: -ms-linear-gradient(top, #8dc059, #6aa436);
+   background: -o-linear-gradient(top, #8dc059, #6aa436);
+   background-image: -ms-linear-gradient(top, #8dc059 0%, #6aa436 100%);
+   -webkit-border-radius: 4px;
+   -moz-border-radius: 4px;
+   border-radius: 4px;
+   -webkit-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+   -moz-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+   box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+   text-shadow: #addc7e 0 1px 0;
+   color: #31540c;
+   font-family: helvetica, serif;
+   padding: 8.5px 18px;
+   font-size: 14px;
+   text-decoration: none;
+   vertical-align: middle;
+   }
+.submit-button:hover {
+   border: 1px solid #447314;
+   text-shadow: #31540c 0 1px 0;
+   background: #6aa436;
+   background: -webkit-gradient(linear, left top, left bottom, from(#8dc059), to(#6aa436));
+   background: -webkit-linear-gradient(top, #8dc059, #6aa436);
+   background: -moz-linear-gradient(top, #8dc059, #6aa436);
+   background: -ms-linear-gradient(top, #8dc059, #6aa436);
+   background: -o-linear-gradient(top, #8dc059, #6aa436);
+   background-image: -ms-linear-gradient(top, #8dc059 0%, #6aa436 100%);
+   color: #fff;
+   }
+.submit-button:active {
+   text-shadow: #31540c 0 1px 0;
+   border: 1px solid #447314;
+   background: #8dc059;
+   background: -webkit-gradient(linear, left top, left bottom, from(#6aa436), to(#6aa436));
+   background: -webkit-linear-gradient(top, #6aa436, #8dc059);
+   background: -moz-linear-gradient(top, #6aa436, #8dc059);
+   background: -ms-linear-gradient(top, #6aa436, #8dc059);
+   background: -o-linear-gradient(top, #6aa436, #8dc059);
+   background-image: -ms-linear-gradient(top, #6aa436 0%, #8dc059 100%);
+   color: #fff;
+   }
+
+
+
+
     </style>
   </head>
   <body align="center">
-    <a href="/">Главная</a><br/><br/>
+
+
+    <button class="submit-button" onclick="location.href='/'">Главная</button>
+    <button class="submit-button" onclick="location.href='/employees'">Таблица работников</button>
+    <button class="submit-button" onclick="location.href='/new_employee'">Добавить работника</button>
+    <br/><br/>
 
 
     <form align="center" action="/employees" method="post">
 
-      Фильтация:
-      Месяц <input type="month" name="month", value={{ month }}><br/>
-      ID <input type="number" name="id" value="{{ filters['id'] }}"><br/>
-      Имя <input type="text" name="name" value="{{ filters['name'] }}"><br/>
-      Возраст <input type="number" name="age" value="{{ filters['age'] }}"><br/>
-      Отдел<input type="text" name="department" value="{{ filters['department'] }}"><br/>
+      Фильтация:<br/>
+      <table align="center">
+        <tr>
+          <th align="right">Месяц</th>
+          <th align="left"><input type="month" name="month", value={{ month }}></th>
+        </tr>
+        <tr>
+          <th align="right">ID</th>
+          <th align="left"><input type="number" name="id" value="{{ filters['id'] }}"></th>
+        </tr>
+        <tr>
+          <th align="right">Имя</th>
+          <th align="left"><input type="text" name="name" value="{{ filters['name'] }}"></th>
+        </tr>
+        <tr>
+          <th align="right">Возраст</th>
+          <th align="left"><input type="number" name="age" value="{{ filters['age'] }}"></th>
+        </tr>
+        <tr>
+          <th align="right">Отдел</th>
+          <th align="left"><input type="text" name="department" value="{{ filters['department'] }}"></th>
+        </tr>
+      </table>
+
+        <br/>
 
       Сортировка:<br/>
       <select name="sorting">
@@ -53,12 +198,12 @@
       </select>
       <br/>
       <br/>
-      <input type="submit" value="Обновить">
+      <input class="submit-button" type="submit" value="Обновить">
 
     </form>
 
 
-    <table align="center"class="machete" border="1px" cellpadding="5px" cellspacing="0px">
+    <table class="table1" align="center"  border="1px" cellpadding="5px" cellspacing="0px">
       <tr>
 	<th align="center">ID</th>
         <th align="center">Имя</th>
