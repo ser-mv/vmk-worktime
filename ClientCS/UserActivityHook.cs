@@ -1,3 +1,5 @@
+/*http://www.codeproject.com/Articles/7294/Processing-Global-Mouse-and-Keyboard-Hooks-in-C (The Code Project Open License (CPOL) 1.02 ) */
+
 using System;
 using System.Runtime.InteropServices;
 using System.Reflection;
